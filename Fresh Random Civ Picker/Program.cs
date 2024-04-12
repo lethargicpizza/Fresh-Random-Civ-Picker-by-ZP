@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Runtime.Remoting.Metadata.W3cXsd2001;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -74,13 +76,17 @@ namespace Fresh_Random_Civ_Picker
             Console.WriteLine("Welcome to the Fresh Random Civ Picker for AoE2DE!\nThis free program was made by Zumba-Pelle.");
 
             int iterator = 0;
-            int remaining = 45;
 
             do
             {
                 Console.Write("\nEnter 1 to receive a fresh random civ, 0 to reset or -1 to quit: ");
-                input = Convert.ToInt32(Console.ReadLine());
+                bool validInput = int.TryParse(Console.ReadLine(), out input);
 
+                if (!validInput)
+                {
+                    Console.WriteLine("Invalid input. Please try again.");
+                    continue;
+                }
 
                 if (!(ValidRange(ref iterator, 0, 44)))
                 {
@@ -100,11 +106,14 @@ namespace Fresh_Random_Civ_Picker
                         given_index = r.Next(0, 45);
                         civilization = civ_names[given_index];
 
-                        Console.WriteLine("\n{0} current set: {1}", civilization, iterator+1);
+                        Console.WriteLine("\n{0} (current set: {1}/45)", civilization, iterator+1);
 
                         iterator += 1;
 
+                        break;
 
+                    default:
+                        Console.WriteLine("Invalid input. Please try again.");
                         break;
                 }
                 
